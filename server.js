@@ -7,9 +7,14 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 
 import jobRouter from './routes/jobRouter.js';
+import authRouter from './routes/authRouter.js';
+import userRouter from './routes/userRouter.js';
+
 
 import errorHandleMiddleware from './middleware/errorHandlerMiddleware.js';
+import { authenticateUser } from './middleware/authMiddleware.js';
 
+import cookieParser from 'cookie-parser';
 
 
 
@@ -18,13 +23,18 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.get('/', (req, res) => {
+app.get('/api/v1/test', (req, res) => {
     res.send('hello')
 })
 
 
-app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/jobs',authenticateUser, jobRouter);
+
+app.use('/api/v1/auth', authRouter);
+
+app.use('/api/v1/users', authenticateUser, userRouter);
 
 app.use('*', (req, res) => {
     res.status(404).json({ msg: 'not found' });

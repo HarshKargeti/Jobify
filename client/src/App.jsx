@@ -5,6 +5,7 @@ import {
   AddJob, Admin, Stats, AllJobs, Profile
 } from './pages'
 
+
 const checkDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
   document.body.classList.toggle('dark-theme', isDarkTheme);
@@ -26,6 +27,8 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element:  <Register />,
+        
+        
       },
       {
         path: 'login',
